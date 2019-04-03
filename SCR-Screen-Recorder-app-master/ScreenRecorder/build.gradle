@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile 'com.android.support:support-v4:22.2.0'
+    compile files('libs/libGoogleAnalyticsV2.jar')
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+    }
+
+    productFlavors {
+        root {
+            applicationId "com.iwobanas.screenrecorder.pro"
+        }
+
+        noRoot {
+            applicationId "com.iwobanas.screenrecorder.noroot.pro"
+            minSdkVersion 21
+            targetSdkVersion 22
+        }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation','ExtraTranslation'
+    }
+
+    signingConfigs {
+
+        release {
+            storeFile file("../../../.android/iwo-banas-release-key.keystore")
+            storePassword System.console() == null ? "IDE build" : new String(System.console().readPassword("\n\$ Enter store password: "))
+            keyAlias "iwo-banas-release"
+            keyPassword System.console() == null ? "IDE build" : new String(System.console().readPassword("\n\$ Enter key password: "))
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
